@@ -1,0 +1,1734 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>StudentHub - Course Management System</title>
+
+<style>
+
+/* ================= GENERAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    background:#f4f6fb;
+    color:#20243a;
+}
+
+/* ================= LOGIN ================= */
+
+#loginScreen{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#182848,#394f83);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.login-card{
+    width:390px;
+    max-width:90%;
+    background:white;
+    padding:40px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.login-logo{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.login-card h1{
+    color:#182848;
+    margin-bottom:5px;
+}
+
+.login-card p{
+    color:#777;
+    margin-bottom:25px;
+}
+
+.login-card form{
+    text-align:left;
+}
+
+.login-card label{
+    display:block;
+    margin:13px 0 6px;
+    font-weight:bold;
+}
+
+.login-card input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    outline:none;
+}
+
+.login-card input:focus{
+    border-color:#394f83;
+}
+
+.login-card button{
+    width:100%;
+    margin-top:20px;
+    padding:13px;
+    background:#394f83;
+    color:white;
+    border:0;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.login-card button:hover{
+    background:#182848;
+}
+
+.login-card small{
+    display:block;
+    margin-top:18px;
+    color:#888;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    position:fixed;
+    width:240px;
+    height:100vh;
+    background:#182848;
+    color:white;
+    padding:25px 15px;
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.logo h2{
+    font-size:24px;
+}
+
+.logo p{
+    font-size:12px;
+    opacity:.7;
+    margin-top:4px;
+}
+
+.menu button{
+    width:100%;
+    padding:14px;
+    margin:5px 0;
+    border:0;
+    background:transparent;
+    color:white;
+    text-align:left;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.menu button:hover,
+.menu button.active{
+    background:#394f83;
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    margin-left:240px;
+    min-height:100vh;
+}
+
+.topbar{
+    background:white;
+    padding:18px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 8px #ddd;
+}
+
+.topbar h2{
+    font-size:24px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#394f83;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* ================= PAGES ================= */
+
+.page{
+    display:none;
+    padding:30px;
+}
+
+.page.active{
+    display:block;
+}
+
+/* ================= WELCOME ================= */
+
+.welcome{
+    background:linear-gradient(120deg,#394f83,#647ac2);
+    color:white;
+    padding:35px;
+    border-radius:15px;
+    margin-bottom:25px;
+}
+
+.welcome h1{
+    margin-bottom:10px;
+}
+
+/* ================= STAT CARDS ================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 3px 12px #ddd;
+}
+
+.stat span{
+    font-size:13px;
+    color:#777;
+}
+
+.stat h2{
+    margin-top:10px;
+    font-size:30px;
+    color:#182848;
+}
+
+/* ================= BOX ================= */
+
+.box{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 3px 12px #ddd;
+    margin-bottom:25px;
+}
+
+.box h3{
+    margin-bottom:20px;
+    color:#182848;
+}
+
+/* ================= FORM ================= */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:7px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:#394f83;
+}
+
+.primary{
+    background:#394f83;
+    color:white;
+    border:0;
+    padding:12px 20px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.primary:hover{
+    background:#293b6b;
+}
+
+/* ================= TABLE ================= */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#182848;
+    color:white;
+    padding:13px;
+    text-align:left;
+}
+
+td{
+    padding:13px;
+    border-bottom:1px solid #eee;
+}
+
+tr:hover{
+    background:#f7f8fc;
+}
+
+.delete{
+    background:#e74c3c;
+    color:white;
+    border:0;
+    padding:7px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.delete:hover{
+    background:#c0392b;
+}
+
+/* ================= COURSE ================= */
+
+.course-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.course-card{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    border:2px solid transparent;
+    box-shadow:0 3px 10px #ddd;
+    text-align:center;
+    transition:.2s;
+}
+
+.course-card:hover{
+    border-color:#394f83;
+    transform:translateY(-3px);
+}
+
+.course-icon{
+    font-size:40px;
+    margin-bottom:12px;
+}
+
+.course-card p{
+    color:#777;
+    margin:10px 0 18px;
+    line-height:1.5;
+}
+
+/* ================= ENROLLMENT ================= */
+
+.enrolled-card{
+    padding:18px;
+    margin:10px 0;
+    background:#f5f6fb;
+    border-radius:8px;
+    border-left:5px solid #394f83;
+}
+
+.enrolled-status{
+    float:right;
+    color:#16803c;
+    font-weight:bold;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress-item{
+    margin:20px 0;
+}
+
+.progress-title{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.progress-bg{
+    width:100%;
+    height:12px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-value{
+    height:100%;
+    border-radius:20px;
+    background:#394f83;
+}
+
+/* ================= LOGOUT ================= */
+
+.logout-btn{
+    background:#e74c3c;
+    color:white;
+    border:0;
+    padding:9px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-left:15px;
+}
+
+.logout-btn:hover{
+    background:#c0392b;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+    .sidebar{
+        width:190px;
+    }
+
+    .main{
+        margin-left:190px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .menu{
+        display:flex;
+        flex-wrap:wrap;
+    }
+
+    .menu button{
+        width:auto;
+        padding:10px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .page{
+        padding:15px;
+    }
+
+    .topbar{
+        padding:15px;
+    }
+
+    .topbar h2{
+        font-size:18px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN SCREEN
+===================================================== -->
+
+<div id="loginScreen">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            🎓
+        </div>
+
+        <h1>StudentHub</h1>
+
+        <p>
+            Student Course Management System
+        </p>
+
+        <form onsubmit="login(event)">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                required
+            >
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                required
+            >
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <small>
+            Demo Login: admin / 1234
+        </small>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <h2>🎓 StudentHub</h2>
+
+        <p>
+            Course Management
+        </p>
+
+    </div>
+
+
+    <div class="menu">
+
+        <button
+            class="active"
+            onclick="openPage('home',this)"
+        >
+            🏠 Dashboard
+        </button>
+
+        <button
+            onclick="openPage('students',this)"
+        >
+            👨‍🎓 Students
+        </button>
+
+        <button
+            onclick="openPage('courses',this)"
+        >
+            📚 Courses
+        </button>
+
+        <button
+            onclick="openPage('enrollment',this)"
+        >
+            📝 Enrollment
+        </button>
+
+        <button
+            onclick="openPage('progress',this)"
+        >
+            📊 Progress
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main">
+
+
+<!-- TOP BAR -->
+
+<header class="topbar">
+
+    <h2 id="pageTitle">
+        Dashboard
+    </h2>
+
+    <div class="profile">
+
+        <div class="avatar">
+            A
+        </div>
+
+        <span id="profileName">
+            Admin
+        </span>
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+    id="home"
+    class="page active"
+>
+
+    <div class="welcome">
+
+        <h1>
+            Welcome to StudentHub 👋
+        </h1>
+
+        <p>
+            Manage students, courses and learning
+            progress from one simple dashboard.
+        </p>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <span>
+                Total Students
+            </span>
+
+            <h2 id="totalStudents">
+                0
+            </h2>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>
+                Total Courses
+            </span>
+
+            <h2>
+                4
+            </h2>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>
+                Enrollments
+            </span>
+
+            <h2 id="totalEnrollments">
+                0
+            </h2>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>
+                Completed Lessons
+            </span>
+
+            <h2 id="completedLessons">
+                0
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <h3>
+            System Overview
+        </h3>
+
+        <p>
+            StudentHub helps administrators manage
+            student information, available courses,
+            enrollments and learning progress efficiently.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STUDENT MANAGEMENT
+===================================================== -->
+
+<section
+    id="students"
+    class="page"
+>
+
+    <div class="box">
+
+        <h3>
+            Add New Student
+        </h3>
+
+        <form onsubmit="addStudent(event)">
+
+            <div class="form-grid">
+
+                <input
+                    id="studentName"
+                    placeholder="Student Name"
+                    required
+                >
+
+                <input
+                    id="studentRoll"
+                    placeholder="Roll Number"
+                    required
+                >
+
+                <input
+                    id="studentEmail"
+                    type="email"
+                    placeholder="Email Address"
+                    required
+                >
+
+                <select
+                    id="studentCourse"
+                    required
+                >
+
+                    <option value="">
+                        Select Course
+                    </option>
+
+                    <option>
+                        BCA
+                    </option>
+
+                    <option>
+                        BCA AI
+                    </option>
+
+                    <option>
+                        B.Sc Computer Science
+                    </option>
+
+                    <option>
+                        B.Sc Data Science
+                    </option>
+
+                </select>
+
+            </div>
+
+            <br>
+
+            <button
+                class="primary"
+                type="submit"
+            >
+                + Add Student
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="box">
+
+        <h3>
+            Student List
+        </h3>
+
+        <input
+            id="studentSearch"
+            placeholder="Search student..."
+            onkeyup="showStudents()"
+        >
+
+        <br>
+        <br>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Name
+                        </th>
+
+                        <th>
+                            Roll No
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Course
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="studentList"
+                ></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COURSES
+===================================================== -->
+
+<section
+    id="courses"
+    class="page"
+>
+
+    <div class="box">
+
+        <h3>
+            Available Courses
+        </h3>
+
+
+        <div class="course-container">
+
+
+            <div class="course-card">
+
+                <div class="course-icon">
+                    ☕
+                </div>
+
+                <h3>
+                    Java
+                </h3>
+
+                <p>
+                    Learn object-oriented programming
+                    and Java fundamentals.
+                </p>
+
+                <button
+                    class="primary"
+                    onclick="enroll('Java')"
+                >
+                    Enroll
+                </button>
+
+            </div>
+
+
+            <div class="course-card">
+
+                <div class="course-icon">
+                    🐍
+                </div>
+
+                <h3>
+                    Python
+                </h3>
+
+                <p>
+                    Learn Python programming from
+                    basics to advanced concepts.
+                </p>
+
+                <button
+                    class="primary"
+                    onclick="enroll('Python')"
+                >
+                    Enroll
+                </button>
+
+            </div>
+
+
+            <div class="course-card">
+
+                <div class="course-icon">
+                    🌐
+                </div>
+
+                <h3>
+                    Web Development
+                </h3>
+
+                <p>
+                    Build websites using HTML,
+                    CSS and JavaScript.
+                </p>
+
+                <button
+                    class="primary"
+                    onclick="enroll('Web Development')"
+                >
+                    Enroll
+                </button>
+
+            </div>
+
+
+            <div class="course-card">
+
+                <div class="course-icon">
+                    🤖
+                </div>
+
+                <h3>
+                    Artificial Intelligence
+                </h3>
+
+                <p>
+                    Understand machine learning
+                    and AI fundamentals.
+                </p>
+
+                <button
+                    class="primary"
+                    onclick="enroll('Artificial Intelligence')"
+                >
+                    Enroll
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ENROLLMENT
+===================================================== -->
+
+<section
+    id="enrollment"
+    class="page"
+>
+
+    <div class="box">
+
+        <h3>
+            My Enrolled Courses
+        </h3>
+
+        <div id="enrollmentList">
+
+            <p>
+                No courses enrolled yet.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROGRESS
+===================================================== -->
+
+<section
+    id="progress"
+    class="page"
+>
+
+    <div class="box">
+
+        <h3>
+            Learning Progress
+        </h3>
+
+
+        <div class="progress-item">
+
+            <div class="progress-title">
+
+                <span>
+                    Java
+                </span>
+
+                <span>
+                    75%
+                </span>
+
+            </div>
+
+            <div class="progress-bg">
+
+                <div
+                    class="progress-value"
+                    style="width:75%"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-item">
+
+            <div class="progress-title">
+
+                <span>
+                    Python
+                </span>
+
+                <span>
+                    60%
+                </span>
+
+            </div>
+
+            <div class="progress-bg">
+
+                <div
+                    class="progress-value"
+                    style="width:60%"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-item">
+
+            <div class="progress-title">
+
+                <span>
+                    Web Development
+                </span>
+
+                <span>
+                    45%
+                </span>
+
+            </div>
+
+            <div class="progress-bg">
+
+                <div
+                    class="progress-value"
+                    style="width:45%"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-item">
+
+            <div class="progress-title">
+
+                <span>
+                    Artificial Intelligence
+                </span>
+
+                <span>
+                    30%
+                </span>
+
+            </div>
+
+            <div class="progress-bg">
+
+                <div
+                    class="progress-value"
+                    style="width:30%"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function login(event){
+
+    event.preventDefault();
+
+    let username =
+        document
+        .getElementById("username")
+        .value
+        .trim();
+
+    let password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    if(
+        username === "admin" &&
+        password === "1234"
+    ){
+
+        localStorage.setItem(
+            "studentHubLogin",
+            "true"
+        );
+
+        document
+        .getElementById("loginScreen")
+        .style.display = "none";
+
+        document
+        .getElementById("profileName")
+        .innerText = "Admin";
+
+        alert(
+            "Login successful!"
+        );
+
+    }
+
+    else{
+
+        alert(
+            "Invalid username or password!"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    localStorage.removeItem(
+        "studentHubLogin"
+    );
+
+    document
+    .getElementById("loginScreen")
+    .style.display = "flex";
+
+    document
+    .getElementById("username")
+    .value = "";
+
+    document
+    .getElementById("password")
+    .value = "";
+
+}
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function openPage(
+    page,
+    button
+){
+
+    document
+    .querySelectorAll(".page")
+    .forEach(
+        section => {
+            section.classList.remove("active");
+        }
+    );
+
+
+    document
+    .getElementById(page)
+    .classList.add("active");
+
+
+    document
+    .querySelectorAll(".menu button")
+    .forEach(
+        btn => {
+            btn.classList.remove("active");
+        }
+    );
+
+
+    button.classList.add("active");
+
+
+    let titles = {
+
+        home:
+            "Dashboard",
+
+        students:
+            "Student Management",
+
+        courses:
+            "Available Courses",
+
+        enrollment:
+            "My Enrollment",
+
+        progress:
+            "Learning Progress"
+
+    };
+
+
+    document
+    .getElementById("pageTitle")
+    .innerText = titles[page];
+
+
+    if(page === "students"){
+
+        showStudents();
+
+    }
+
+
+    if(page === "enrollment"){
+
+        showEnrollments();
+
+    }
+
+}
+
+
+/* =====================================================
+   STUDENT DATA
+===================================================== */
+
+function getStudents(){
+
+    return JSON.parse(
+        localStorage.getItem(
+            "studentHubStudents"
+        )
+    ) || [];
+
+}
+
+
+/* =====================================================
+   ADD STUDENT
+===================================================== */
+
+function addStudent(event){
+
+    event.preventDefault();
+
+
+    let students =
+        getStudents();
+
+
+    let student = {
+
+        id:
+            Date.now(),
+
+        name:
+            document
+            .getElementById(
+                "studentName"
+            )
+            .value,
+
+        roll:
+            document
+            .getElementById(
+                "studentRoll"
+            )
+            .value,
+
+        email:
+            document
+            .getElementById(
+                "studentEmail"
+            )
+            .value,
+
+        course:
+            document
+            .getElementById(
+                "studentCourse"
+            )
+            .value
+
+    };
+
+
+    students.push(student);
+
+
+    localStorage.setItem(
+
+        "studentHubStudents",
+
+        JSON.stringify(students)
+
+    );
+
+
+    event.target.reset();
+
+
+    alert(
+        "Student added successfully!"
+    );
+
+
+    showStudents();
+
+
+    updateStats();
+
+}
+
+
+/* =====================================================
+   DISPLAY STUDENTS
+===================================================== */
+
+function showStudents(){
+
+    let students =
+        getStudents();
+
+
+    let searchElement =
+        document.getElementById(
+            "studentSearch"
+        );
+
+
+    let search =
+        searchElement
+        ? searchElement.value.toLowerCase()
+        : "";
+
+
+    let table =
+        document.getElementById(
+            "studentList"
+        );
+
+
+    if(!table)
+        return;
+
+
+    table.innerHTML = "";
+
+
+    students
+
+    .filter(
+        student =>
+
+            student.name
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            student.roll
+            .toLowerCase()
+            .includes(search)
+    )
+
+    .forEach(
+        (student,index) => {
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${student.name}
+                    </td>
+
+                    <td>
+                        ${student.roll}
+                    </td>
+
+                    <td>
+                        ${student.email}
+                    </td>
+
+                    <td>
+                        ${student.course}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="delete"
+                            onclick="
+                                removeStudent(
+                                    ${student.id}
+                                )
+                            "
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   DELETE STUDENT
+===================================================== */
+
+function removeStudent(id){
+
+    let students =
+        getStudents();
+
+
+    students =
+        students.filter(
+            student =>
+                student.id !== id
+        );
+
+
+    localStorage.setItem(
+
+        "studentHubStudents",
+
+        JSON.stringify(students)
+
+    );
+
+
+    showStudents();
+
+    updateStats();
+
+}
+
+
+/* =====================================================
+   COURSE DATA
+===================================================== */
+
+function getEnrollments(){
+
+    return JSON.parse(
+
+        localStorage.getItem(
+            "studentHubCourses"
+        )
+
+    ) || [];
+
+}
+
+
+/* =====================================================
+   ENROLL COURSE
+===================================================== */
+
+function enroll(course){
+
+    let courses =
+        getEnrollments();
+
+
+    if(
+        courses.includes(course)
+    ){
+
+        alert(
+            "Already enrolled in " +
+            course
+        );
+
+        return;
+
+    }
+
+
+    courses.push(course);
+
+
+    localStorage.setItem(
+
+        "studentHubCourses",
+
+        JSON.stringify(courses)
+
+    );
+
+
+    alert(
+
+        "Successfully enrolled in " +
+        course
+
+    );
+
+
+    updateStats();
+
+}
+
+
+/* =====================================================
+   DISPLAY ENROLLMENTS
+===================================================== */
+
+function showEnrollments(){
+
+    let courses =
+        getEnrollments();
+
+
+    let container =
+        document.getElementById(
+            "enrollmentList"
+        );
+
+
+    if(
+        courses.length === 0
+    ){
+
+        container.innerHTML =
+
+            "<p>No courses enrolled yet.</p>";
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    courses.forEach(
+        course => {
+
+            container.innerHTML += `
+
+                <div class="enrolled-card">
+
+                    📚
+                    <strong>
+                        ${course}
+                    </strong>
+
+                    <span class="enrolled-status">
+                        Enrolled ✓
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   DASHBOARD STATISTICS
+===================================================== */
+
+function updateStats(){
+
+    let students =
+        getStudents();
+
+
+    let courses =
+        getEnrollments();
+
+
+    document
+    .getElementById(
+        "totalStudents"
+    )
+    .innerText =
+        students.length;
+
+
+    document
+    .getElementById(
+        "totalEnrollments"
+    )
+    .innerText =
+        courses.length;
+
+}
+
+
+/* =====================================================
+   PAGE LOAD
+===================================================== */
+
+window.onload = function(){
+
+    updateStats();
+
+
+    let loggedIn =
+        localStorage.getItem(
+            "studentHubLogin"
+        );
+
+
+    if(
+        loggedIn === "true"
+    ){
+
+        document
+        .getElementById(
+            "loginScreen"
+        )
+        .style.display =
+            "none";
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>
+```
